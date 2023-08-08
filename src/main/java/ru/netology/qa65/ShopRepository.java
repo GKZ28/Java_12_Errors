@@ -1,4 +1,5 @@
 package ru.netology.qa65;
+import java.util.Objects;
 
 public class ShopRepository {
     private Product[] products = new Product[0];
@@ -33,6 +34,11 @@ public class ShopRepository {
 
     // Этот способ мы рассматривали в теории в теме про композицию
     public void remove(int id) {
+        Product foundProduct = findById(id);
+        if (foundProduct == null) {
+            throw new NotFoundException ("Продукт с ID: " + id + "не найден");
+        }
+
         Product[] tmp = new Product[products.length - 1];
         int copyToIndex = 0;
         for (Product product : products) {
@@ -42,5 +48,14 @@ public class ShopRepository {
             }
         }
         products = tmp;
+    }
+
+    public Product findById (int id) {
+        for (Product product : products) {
+            if (product.getId() == id) {
+                return product;
+            }
+        }
+        return null;
     }
 }
